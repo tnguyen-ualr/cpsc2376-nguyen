@@ -5,7 +5,38 @@
 #include <string>
 #include <iomanip>
 #include <type_traits>
+#include <sstream>
 using namespace std;
+
+//check if input is a float
+float isFloat(const string& check) {
+    //get value and check if it is the appropriate type
+    //if it is the appropriate type then pass it as the variable, if not then ask for a proper value
+    float num;
+    int intNum;
+    string input = check;
+    goto firstcheck;
+
+    while (true) {
+        cout << "Enter a valid input: ";
+        cin >> input;
+        firstcheck:
+        
+        //try to convert the string to a float
+        istringstream ss(input);
+        ss >> num;
+        
+        //check if the conversion was successful (got to the end AND didnt fail)
+        if (ss.eof() && !ss.fail()) {
+            return num;
+        }
+        else {
+            cout << "Invalid input.\n";
+        }
+    }
+
+    //return num;
+}
 
 //display balance from file
 void DisplayBalance(const string& filename) {
@@ -77,56 +108,57 @@ int main()
     cout << "Welcome to Your Bank Account!\n";
     //check if an account_balance.txt file exists, if it doesnt then create one with $100
     ifstream inf{ "account_balance.txt" };
-    float money = 100.00;
+    float initialBal = 100.00;
     if (!inf)
     {
         // Create file with initial amount if not found
-        NewAccount("account_balance.txt", money);
-        cout << "Initializing account with $" << fixed << setprecision(2) << money << endl;
+        NewAccount("account_balance.txt", initialBal);
+        cout << "Initializing account with $" << fixed << setprecision(2) << initialBal << endl;
     }
     else {
         DisplayBalance("account_balance.txt");
         inf.close();
     }
     //allow user to perform: Check Balance, Deposit, Withdraw (affects the .txt file)
-    int response;
+    string response;
+    string money;
     while (true) {
         ShowMenu();
         cout << "Enter Your choice : ";
         cin >> response;
-        if (response == 1) {
+        if (isFloat(response) == 1) {
             //check balance
             DisplayBalance("account_balance.txt");
         }
-        else if (response == 2) {
+        else if (isFloat(response) == 2) {
             //deposit
             while (true) {
                 cout << "Enter Deposit amount: ";
                 cin >> money;
-                if (money >= 0) {
+                if (isFloat(money) >= 0) {
                     break;
                 }
                 else {
                     cout << "Amount is invalid. Please enter a valid amount." << endl;
                 }
             }
-            DepositMoney("account_balance.txt", money);
+            DepositMoney("account_balance.txt", isFloat(money));
         }
-        else if (response == 3) {
+        else if (isFloat(response) == 3) {
             //withdraw
             while (true) {
                 cout << "Enter Withdraw amount: ";
                 cin >> money;
-                if (money >= 0) {
+                if (isFloat(money) >= 0) {
                     break;
                 }
                 else {
                     cout << "Amount is invalid. Please enter a valid amount." << endl;
                 }
             }
-            WithdrawMoney("account_balance.txt", money);
+            WithdrawMoney("account_balance.txt", isFloat(money));
         }
-        else if (response == 4) {
+        else if (isFloat(response) == 4) {
             //exit
             cout << "Thank you for banking with us!" << endl;
             break;
