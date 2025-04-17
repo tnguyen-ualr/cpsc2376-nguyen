@@ -32,7 +32,8 @@ public:
     int totalCopies;
     int availableCopies;
 
-    std::string getInfo();
+    Boardgame(std::string title, int totalCopies, int availableCopies);
+    std::string getInfo() const;
 };
 
 //Customer.h
@@ -41,7 +42,8 @@ public:
     std::string name;
     std::string contactInfo;
 
-    std::string getSummary();
+    Customer(std::string name, std::string contactInfo);
+    std::string getSummary() const;
 };
 
 //Checkout.h
@@ -53,6 +55,7 @@ public:
     std::tm dueDate;
     bool isReturned;
 
+    Checkout(Boardgame* title, Customer* customer, std::tm checkoutDate, std::tm dueDate, bool isReturned);
     void gameReturned();
 };
 
