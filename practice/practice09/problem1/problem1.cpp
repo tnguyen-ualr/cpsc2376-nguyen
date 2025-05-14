@@ -12,13 +12,13 @@ int main()
     float* flask{ nullptr };    // Pointer to the selected potion
     
     std::string choice;
-    float amount;
+    float amount = 0;
 
     while (true) {
         std::cout << "Which potion to add liquid to? (Red/Blue) or type 'Done' to finish: ";
-        std::getline(std::cin, choice);
+        std::cin >> choice;
 
-        // Exit condition
+        //exit condition
         if (choice == "Done" || choice == "done") {
             break;
         }
